@@ -1,0 +1,14 @@
+These are the things to learn i am just building these write it tomorrow
+Good choice. For a fraud detection project, Random Forest is actually a strong practical baseline because:
+
+handles tabular fraud data very well
+works with imbalanced datasets better than many models
+gives feature importance naturally
+integrates nicely with SHAP explainability
+easier to deploy than deep neural networks
+interviewers trust it because it is widely used in finance/risk systems
+
+
+1. Shap
+2 FAISS
+3. 
