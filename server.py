@@ -72,12 +72,14 @@ def index():
 @app.route("/api/overview")
 def api_overview():
     cv = load_csv("cv_results.csv")
-    best = cv["weighted_score"].idxmax() if cv is not None and "weighted_score" in cv.columns else "Random Forest"
-    return jsonify({
-        "best_model": best,
-        "cv_weighted": round(float(cv["weighted_score"].max()), 4) if cv is not None else None,
-        "cv_roc_auc": round(float(cv["roc_auc"].max()), 4) if cv is not None else None,
-    })
+    if cv is not None and "weighted_score" in cv.columns:
+        best = cv["weighted_score"].idxmax()
+        row = cv.loc[best]
+        return jsonify({
+            "best_model": best,
+            "metrics": {col: round(float(row[col]), 4) for col in ["accuracy", "precision", "recall", "f1", "roc_auc", "pr_auc", "weighted_score"]}
+        })
+    return jsonify({"best_model": "Random Forest", "metrics": {}})
 
 
 @app.route("/api/comparison")

@@ -165,10 +165,12 @@ async function loadOverview() {
   document.getElementById('pipeline').innerHTML =
     ['Kaggle Data', 'SMOTE', 'Random Forest', 'SHAP', 'FAISS KB', 'STR Report']
       .map((s, i) => (i ? '<span class="arrow">→</span>' : '') + `<span class="step">${s}</span>`).join('');
+  const metricLabels = {'accuracy':'Accuracy','precision':'Precision','recall':'Recall','f1':'F1-Score','roc_auc':'ROC-AUC','pr_auc':'PR-AUC','weighted_score':'Weighted Score'};
   document.getElementById('overview-cards').innerHTML =
     `<div class="card"><div class="label">Best Model</div><div class="value blue">${data.best_model}</div></div>` +
-    `<div class="card"><div class="label">CV Weighted Score</div><div class="value green">${data.cv_weighted}</div></div>` +
-    `<div class="card"><div class="label">CV ROC-AUC</div><div class="value">${data.cv_roc_auc}</div></div>`;
+    Object.entries(data.metrics).map(([k,v]) =>
+      `<div class="card"><div class="label">${metricLabels[k]||k}</div><div class="value">${v.toFixed(4)}</div></div>`
+    ).join('');
 }
 
 // ── Comparison ────────────────────────────────────────────────────────
