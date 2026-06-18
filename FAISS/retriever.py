@@ -1,25 +1,15 @@
-"""
-retriever.py
-─────────────
-Loads the FAISS index built by embedder.py and exposes one function:
-
-    retrieve(query, top_k=3)
-
-You pass in your plain English SHAP summary as the query.
-It returns the top matching rules/cases from the knowledge base.
-
-Usage — paste after your plain English output:
-    from retriever import retrieve, print_retrieved_rules
-    results = retrieve(plain["summary"])
-    print_retrieved_rules(results)
-"""
-
-import os
-import re
-import json
-import faiss
+import os, re, json, logging
 import numpy as np
-from sentence_transformers import SentenceTransformer
+
+try:
+    import faiss
+except ImportError:
+    faiss = None
+
+try:
+    from sentence_transformers import SentenceTransformer
+except ImportError:
+    SentenceTransformer = None
 
 INDEX_PATH    = "faiss_index.bin"
 METADATA_PATH = "faiss_metadata.json"
@@ -32,20 +22,21 @@ _metadata = None
 
 def _load():
     global _model, _index, _metadata
+    if SentenceTransformer is None or faiss is None:
+        raise RuntimeError("FAISS or SentenceTransformer not installed")
 
     if _model is None:
-        print("[FraudShield] Loading retriever model ...")
         _model = SentenceTransformer(EMBED_MODEL)
 
     if _index is None:
-        if not os.path.exists(INDEX_PATH):
-            raise FileNotFoundError(
-                f"FAISS index not found at {INDEX_PATH}. Run embedder.py first."
-            )
-        _index = faiss.read_index(INDEX_PATH)
+        path = os.environ.get("FAISS_INDEX_PATH", INDEX_PATH)
+        if not os.path.exists(path):
+            raise FileNotFoundError(f"FAISS index not found at {path}")
+        _index = faiss.read_index(path)
 
     if _metadata is None:
-        with open(METADATA_PATH, "r", encoding="utf-8") as f:
+        path = os.environ.get("FAISS_METADATA_PATH", METADATA_PATH)
+        with open(path, "r", encoding="utf-8") as f:
             _metadata = json.load(f)
 
 
@@ -65,20 +56,11 @@ def _source_label(source_filename: str) -> str:
 
 
 def retrieve(query: str, top_k: int = 3) -> list:
-    """
-    Finds the most relevant rules from the knowledge base
-    for a given plain English fraud explanation.
-
-    Parameters
-    ----------
-    query  : str — your SHAP plain English summary sentence
-    top_k  : int — how many results to return (default 3)
-
-    Returns
-    -------
-    list of dicts: rule_id, source, text, score
-    """
-    _load()
+    try:
+        _load()
+    except (RuntimeError, FileNotFoundError) as e:
+        logging.warning(f"FAISS retrieve skipped: {e}")
+        return []
 
     query_vec = _model.encode([query], normalize_embeddings=True)
     query_vec = np.array(query_vec, dtype="float32")
@@ -96,7 +78,6 @@ def retrieve(query: str, top_k: int = 3) -> list:
             "text":    chunk["text"],
             "score":   round(float(score), 4),
         })
-
     return results
 
 

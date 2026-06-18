@@ -1,7 +1,6 @@
+# Data
 creditcard.csv
-archive.zip
-# Existing
-creditcard.csv
+DATA/
 archive.zip
 
 # Python

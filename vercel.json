@@ -2,7 +2,19 @@
   "builds": [
     {
       "src": "server.py",
-      "use": "@vercel/python"
+      "use": "@vercel/python",
+      "config": {
+        "includeFiles": [
+          "templates/**",
+          "FAISS/**",
+          "KB/**",
+          "plain_english.py",
+          "str_generator.py",
+          "*.json",
+          "cv_results.csv",
+          "model_comparison_results.csv"
+        ]
+      }
     }
   ],
   "routes": [

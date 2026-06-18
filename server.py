@@ -1,13 +1,30 @@
-import os, json, functools
+import os, json, logging
 import numpy as np
 import pandas as pd
 import joblib
+import requests
 from flask import Flask, jsonify, render_template, request
 from sklearn.model_selection import train_test_split
 
 app = Flask(__name__)
 
-# ── Lazy-loaded global state ───────────────────────────────────────────
+
+def _fetch_if_missing(local_path, env_var=None):
+    if os.path.exists(local_path):
+        return local_path
+    url = os.environ.get(env_var) if env_var else None
+    if not url:
+        return local_path
+    tmp = os.path.join("/tmp", local_path.replace("\\", "/").split("/")[-1])
+    if not os.path.exists(tmp):
+        os.makedirs(os.path.dirname(tmp), exist_ok=True)
+        logging.info(f"Downloading {url} -> {tmp}")
+        r = requests.get(url, timeout=300)
+        r.raise_for_status()
+        with open(tmp, "wb") as f:
+            f.write(r.content)
+    return tmp
+
 
 class LazyLoader:
     def __init__(self):
@@ -20,13 +37,15 @@ class LazyLoader:
     @property
     def model(self):
         if self._model is None:
-            self._model = joblib.load("rf_pipeline.pkl")
+            path = _fetch_if_missing("rf_pipeline.pkl", "MODEL_URL")
+            self._model = joblib.load(path)
         return self._model
 
     @property
     def df(self):
         if self._df is None:
-            self._df = pd.read_csv("DATA/creditcard.csv")
+            path = _fetch_if_missing("DATA/creditcard.csv", "DATA_URL")
+            self._df = pd.read_csv(path)
         return self._df
 
     @property
@@ -46,13 +65,12 @@ class LazyLoader:
 L = LazyLoader()
 
 
-# ── Helpers ────────────────────────────────────────────────────────────
-
 def load_csv(path, idx_col=0):
     try:
         return pd.read_csv(path, index_col=idx_col)
     except Exception:
         return None
+
 
 def load_json(path):
     try:
@@ -61,8 +79,6 @@ def load_json(path):
     except Exception:
         return None
 
-
-# ── Routes ─────────────────────────────────────────────────────────────
 
 @app.route("/")
 def index():
@@ -131,12 +147,10 @@ def api_analyze():
     sample = X_test.loc[idx]
     true_label = int(y_test.loc[idx])
 
-    # Predict
     X_t = pd.DataFrame([sample], columns=features)
     pred = int(model.predict(X_t)[0])
     proba = float(model.predict_proba(X_t)[0, 1])
 
-    # SHAP (lazy import)
     import shap
     X_t_t = pd.DataFrame(
         model.named_steps["preprocessor"].transform(X_t),
@@ -155,15 +169,12 @@ def api_analyze():
     for name, sv, fv in ranked[:10]:
         shap_data.append({"feature": name, "value": round(float(sv), 4), "feat_value": round(float(fv), 4)})
 
-    # Plain English (lazy import)
     from plain_english import explain_in_plain_english
     plain = explain_in_plain_english(exp, top_n=5)
 
-    # FAISS (lazy import)
     from FAISS.retriever import retrieve
     faiss_results = retrieve(plain["summary"])
 
-    # STR (lazy import)
     from str_generator import generate_str_report
     output_score = float(np.asarray(exp.base_values).flatten()[0]) + float(exp.values.sum())
     fraud_prob = min(max(output_score, 0), 1)
