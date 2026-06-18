@@ -1,0 +1,9 @@
+flask
+pandas
+numpy
+scikit-learn
+joblib
+imbalanced-learn
+shap
+faiss-cpu
+matplotlib
