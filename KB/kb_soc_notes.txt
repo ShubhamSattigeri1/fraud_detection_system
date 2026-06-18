@@ -1,0 +1,32 @@
+DOCUMENT: SOC Analyst Investigation Notes — Synthetic Case Summaries
+SOURCE: Canara Bank Fraud Intelligence Unit — Internal Case Library
+
+CASE SOC-001: Cross-Border Transfer After SIM Swap
+Analyst Note: Customer account flagged at 2:14 AM for an international transfer of INR 1,45,000 to a Singapore account. Investigation revealed a SIM swap had occurred 48 minutes prior. The fraudster used the new SIM to receive OTP and authenticate the transfer. Transaction was on a new device never previously linked to the account. Case classified as Critical. STR filed with FIU-IND. Matched rules: RBI-002, UPI-001, PMLA-003.
+
+CASE SOC-002: Structuring Pattern Across 4 Transactions
+Analyst Note: Account holder made 4 transfers of INR 2,40,000 each within 6 hours to different beneficiaries. Individual amounts below the INR 10L reporting threshold but aggregate was INR 9,60,000. Pattern consistent with structuring to avoid detection. No business justification provided. Account placed under enhanced monitoring. STR filed. Matched rules: PMLA-001, RBI-003.
+
+CASE SOC-003: Mule Account Receiving Multiple Inbound Transfers
+Analyst Note: Account opened 3 weeks ago with minimal KYC received 11 inbound transfers from different accounts within 48 hours totalling INR 6,30,000. All funds transferred out to a cryptocurrency exchange within 2 hours. Account holder unreachable. Account frozen. Matched rules: PMLA-002, PMLA-006, RBI-005.
+
+CASE SOC-004: Dormant Account Sudden Large Transaction
+Analyst Note: Account dormant for 9 months. Suddenly received INR 4,50,000 from an unknown sender and immediately transferred out to a new payee. Customer confirmed they did not initiate the transaction. Account was accessed via a new device from a different city. Classic account takeover pattern. Matched rules: PMLA-007, RBI-006, UPI-008.
+
+CASE SOC-005: Micro-Transaction Testing Before Large Fraud
+Analyst Note: Account showed 8 transactions of INR 1 each within 3 minutes at 3:47 AM, followed by a single transfer of INR 87,000 to a new payee. Micro-transactions are a known testing pattern used by fraudsters after compromising account credentials. Large transaction was auto-blocked by velocity rule. Customer notified. Matched rules: UPI-003, RBI-003, RBI-007.
+
+CASE SOC-006: New Device + New Payee + High Value Combo
+Analyst Note: Transaction flagged for the combination of three high-risk signals occurring simultaneously — first-time device, first-time payee, and transaction value 7x the customer's 90-day average. No prior international activity. Customer called and confirmed they had not initiated the transfer. Funds recovered. Matched rules: UPI-002, RBI-004, RBI-002.
+
+CASE SOC-007: Collect Request Scam — Refund Fraud
+Analyst Note: Customer received a WhatsApp message claiming to be from Canara Bank support offering a refund. Fraudster sent a UPI collect request for INR 12,000. Customer approved thinking it was a credit. Transaction was outbound. Customer reported within 10 minutes. Chargeback initiated. Matched rules: UPI-004, RBI-004.
+
+CASE SOC-008: Round-Trip Layering Through Three Accounts
+Analyst Note: INR 3,20,000 transferred from Account A to Account B, then to Account C, then returned to an account linked to the original sender within 4 hours. Classic layering pattern to obscure source of funds. All three accounts had the same registered mobile number with different names. Escalated to compliance. Matched rules: PMLA-004, PMLA-008.
+
+CASE SOC-009: International IP on Domestic UPI
+Analyst Note: UPI payment of INR 55,000 initiated from an IP address geolocated to Dubai. Account is a domestic savings account with no international travel history. Customer was physically present in Pune at the time based on branch visit 2 hours prior. Transaction auto-blocked. Account credentials reset. Matched rules: UPI-007, RBI-006, RBI-008.
+
+CASE SOC-010: Phishing VPA — Fake Merchant Address
+Analyst Note: Customer made a payment of INR 28,000 to VPA "canarabank.refund@ybl" which was registered 4 days ago and had already received funds from 23 other customers. VPA name designed to impersonate bank. VPA reported to NPCI for takedown. Customers notified. Matched rules: UPI-006, PMLA-003.

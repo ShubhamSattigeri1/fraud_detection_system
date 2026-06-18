@@ -1,0 +1,172 @@
+[
+  {
+    "text": "RULE RBI-001: Large Value Transaction Monitoring\nAny single transaction exceeding INR 10,00,000 (Ten Lakh Rupees) must be flagged for enhanced due diligence. Banks are required to verify source of funds for transactions above this threshold. Failure to monitor large value transactions is a compliance violation under RBI Master Directions on Fraud.",
+    "source": "kb_rbi_guidelines.txt",
+    "chunk_id": "kb_rbi_guidelines.txt__chunk_1"
+  },
+  {
+    "text": "RULE RBI-002: Cross-Border Transfer from New Device\nAny international fund transfer initiated from a device that has not been previously associated with the account must be blocked pending verification. The customer must re-authenticate using a second factor before the transfer is processed. This rule applies to UPI, NEFT, RTGS, and IMPS channels.",
+    "source": "kb_rbi_guidelines.txt",
+    "chunk_id": "kb_rbi_guidelines.txt__chunk_2"
+  },
+  {
+    "text": "RULE RBI-003: Velocity Breach — Multiple Transactions in Short Window\nIf more than 3 transactions are initiated from the same account within a 10-minute window, the account must be flagged for velocity fraud. Banks must implement real-time velocity checks across all payment channels. Rapid sequential transactions are a primary indicator of account compromise.",
+    "source": "kb_rbi_guidelines.txt",
+    "chunk_id": "kb_rbi_guidelines.txt__chunk_3"
+  },
+  {
+    "text": "RULE RBI-004: New Payee High Value Transfer\nWhen a customer adds a new payee and initiates a transfer exceeding INR 50,000 within 30 minutes of adding that payee, the transaction must be held for a cooling-off period of 4 hours or confirmed via a separate out-of-band channel.",
+    "source": "kb_rbi_guidelines.txt",
+    "chunk_id": "kb_rbi_guidelines.txt__chunk_4"
+  },
+  {
+    "text": "RULE RBI-005: Incomplete KYC Account Restrictions\nAccounts with incomplete KYC documentation must not be permitted to receive transfers exceeding INR 10,000 per transaction or INR 1,00,000 per month in aggregate. Any transaction breaching these limits on an incomplete KYC account must be flagged immediately.",
+    "source": "kb_rbi_guidelines.txt",
+    "chunk_id": "kb_rbi_guidelines.txt__chunk_5"
+  },
+  {
+    "text": "RULE RBI-006: Unusual Geographic Transaction Pattern\nA transaction initiated from a location more than 500 km from the customer's registered address or last known transaction location must trigger an additional authentication step. Transactions originating from foreign IP addresses on domestic accounts require mandatory OTP confirmation.",
+    "source": "kb_rbi_guidelines.txt",
+    "chunk_id": "kb_rbi_guidelines.txt__chunk_6"
+  },
+  {
+    "text": "RULE RBI-007: Night-Time High Value Transactions\nTransactions exceeding INR 25,000 initiated between 11 PM and 6 AM local time on accounts with no prior history of night-time activity must be subjected to enhanced scrutiny. Banks may implement a time-delay mechanism for such transactions.",
+    "source": "kb_rbi_guidelines.txt",
+    "chunk_id": "kb_rbi_guidelines.txt__chunk_7"
+  },
+  {
+    "text": "RULE RBI-008: First-Time International Transaction\nFor accounts that have never previously made an international transfer, the first cross-border transaction must be verified through a video KYC or branch confirmation process regardless of the transaction amount.",
+    "source": "kb_rbi_guidelines.txt",
+    "chunk_id": "kb_rbi_guidelines.txt__chunk_8"
+  },
+  {
+    "text": "RULE PMLA-001: Structuring Detection\nStructuring refers to the deliberate splitting of a large transaction into multiple smaller transactions to avoid detection thresholds. If an account shows 3 or more transactions within 24 hours that individually fall below INR 10,00,000 but collectively exceed it, this constitutes a structuring pattern and must be reported to FIU-IND as a Suspicious Transaction Report.",
+    "source": "kb_pmla_aml.txt",
+    "chunk_id": "kb_pmla_aml.txt__chunk_1"
+  },
+  {
+    "text": "RULE PMLA-002: Mule Account Identification\nA mule account is one used to receive and rapidly forward fraudulent funds. Key indicators include: account receives a large credit followed by immediate debit within 2 hours, account has no prior transaction history consistent with stated occupation, multiple inbound transfers from unknown senders within 48 hours. Such accounts must be flagged and reported under Section 12 of PMLA.",
+    "source": "kb_pmla_aml.txt",
+    "chunk_id": "kb_pmla_aml.txt__chunk_2"
+  },
+  {
+    "text": "RULE PMLA-003: Suspicious Transaction Report — Filing Obligation\nBanks are required to file a Suspicious Transaction Report (STR) with the Financial Intelligence Unit of India (FIU-IND) within 7 days of detecting a suspicious transaction. The STR must include transaction details, account holder information, nature of suspicion, and any related transactions. Failure to file within the stipulated time is a punishable offence under PMLA Section 13.",
+    "source": "kb_pmla_aml.txt",
+    "chunk_id": "kb_pmla_aml.txt__chunk_3"
+  },
+  {
+    "text": "RULE PMLA-004: Round-Trip Transaction Pattern\nA round-trip transaction occurs when funds are transferred out of an account and return to the same or associated account within a short period, often through intermediary accounts. This is a strong indicator of layering in money laundering. Banks must monitor for circular fund flows across linked accounts.",
+    "source": "kb_pmla_aml.txt",
+    "chunk_id": "kb_pmla_aml.txt__chunk_4"
+  },
+  {
+    "text": "RULE PMLA-005: Politically Exposed Person Enhanced Monitoring\nTransactions involving Politically Exposed Persons (PEPs) or their immediate family members require enhanced due diligence regardless of transaction amount. Any unusual transaction pattern on a PEP account must immediately trigger an STR filing.",
+    "source": "kb_pmla_aml.txt",
+    "chunk_id": "kb_pmla_aml.txt__chunk_5"
+  },
+  {
+    "text": "RULE PMLA-006: Cash-Equivalent Digital Transaction Threshold\nDigital transactions that replicate cash-like behaviour — such as rapid conversion to gift cards, cryptocurrency, or foreign currency — must be treated with the same suspicion as large cash transactions. Transactions of INR 50,000 or above in this category require source of funds documentation.",
+    "source": "kb_pmla_aml.txt",
+    "chunk_id": "kb_pmla_aml.txt__chunk_6"
+  },
+  {
+    "text": "RULE PMLA-007: Dormant Account Sudden Activity\nAn account that has shown no activity for 6 months or more and suddenly receives or initiates a high-value transaction must be flagged under PMLA guidelines. Banks must re-verify KYC for such accounts before processing large transactions.",
+    "source": "kb_pmla_aml.txt",
+    "chunk_id": "kb_pmla_aml.txt__chunk_7"
+  },
+  {
+    "text": "RULE PMLA-008: Multiple Accounts Same Beneficiary\nIf multiple accounts within the same bank are found to be transferring funds to the same beneficiary account in a coordinated pattern, this is an indicator of organised fraud or money laundering and must be escalated to the compliance team immediately.",
+    "source": "kb_pmla_aml.txt",
+    "chunk_id": "kb_pmla_aml.txt__chunk_8"
+  },
+  {
+    "text": "PATTERN UPI-001: SIM Swap Attack\nA SIM swap attack occurs when a fraudster convinces the telecom operator to transfer the victim's phone number to a new SIM card. Indicators include: OTP delivery failure reported by customer, sudden change in device fingerprint, high-value transaction initiated immediately after a SIM change event. Banks must cross-check with telecom APIs for recent SIM swap activity before processing transactions above INR 10,000.",
+    "source": "kb_upi_fraud_patterns.txt",
+    "chunk_id": "kb_upi_fraud_patterns.txt__chunk_1"
+  },
+  {
+    "text": "PATTERN UPI-002: New Device High Value Transaction\nWhen a UPI transaction is initiated from a device that has never been associated with the account, and the transaction value is more than 3x the customer's average transaction value, it is a strong fraud indicator. The combination of new device + high amount + new payee is classified as a critical fraud pattern.",
+    "source": "kb_upi_fraud_patterns.txt",
+    "chunk_id": "kb_upi_fraud_patterns.txt__chunk_2"
+  },
+  {
+    "text": "PATTERN UPI-003: Rapid Small Transaction Velocity\nFraudsters often test a compromised account with small transactions (INR 1 to INR 10) before executing a large transfer. If an account shows 5 or more micro-transactions (below INR 100) within a 5-minute window followed by a large transaction, the large transaction must be blocked and reviewed.",
+    "source": "kb_upi_fraud_patterns.txt",
+    "chunk_id": "kb_upi_fraud_patterns.txt__chunk_3"
+  },
+  {
+    "text": "PATTERN UPI-004: Collect Request Fraud\nFraudsters send UPI collect requests disguised as refund or cashback notifications. Customers are tricked into approving a debit instead of a credit. Indicator: customer approves an outbound collect request from an unregistered VPA for the first time. Banks must add a clear warning layer for first-time collect approvals.",
+    "source": "kb_upi_fraud_patterns.txt",
+    "chunk_id": "kb_upi_fraud_patterns.txt__chunk_4"
+  },
+  {
+    "text": "PATTERN UPI-005: Social Engineering — Screen Share Fraud\nCustomer shares their screen with a fraudster posing as bank support. Fraudster captures UPI PIN or OTP. Indicator: multiple failed authentication attempts followed by a sudden successful high-value transaction from a different device or location than the failed attempts.",
+    "source": "kb_upi_fraud_patterns.txt",
+    "chunk_id": "kb_upi_fraud_patterns.txt__chunk_5"
+  },
+  {
+    "text": "PATTERN UPI-006: Phishing VPA Pattern\nFraudulent VPAs (Virtual Payment Addresses) that closely mimic legitimate merchant addresses. For example, \"canara.support@upi\" or \"refund.axis@paytm\". Transactions to VPAs that were registered within the last 7 days and have no prior transaction history must be flagged.",
+    "source": "kb_upi_fraud_patterns.txt",
+    "chunk_id": "kb_upi_fraud_patterns.txt__chunk_6"
+  },
+  {
+    "text": "PATTERN UPI-007: International IP on Domestic UPI Account\nUPI is a domestic payment system. Any transaction request originating from an IP address geolocated outside India on a domestic UPI account is a definitive fraud indicator. Such transactions must be auto-blocked and the customer notified immediately.",
+    "source": "kb_upi_fraud_patterns.txt",
+    "chunk_id": "kb_upi_fraud_patterns.txt__chunk_7"
+  },
+  {
+    "text": "PATTERN UPI-008: Account Takeover via Password Reset\nIndicator pattern: password reset request, followed by device change, followed by high-value transaction — all within a 30-minute window. This three-step sequence is the most common account takeover pattern in Indian digital banking and must trigger an automatic account freeze pending customer verification.",
+    "source": "kb_upi_fraud_patterns.txt",
+    "chunk_id": "kb_upi_fraud_patterns.txt__chunk_8"
+  },
+  {
+    "text": "CASE SOC-001: Cross-Border Transfer After SIM Swap\nAnalyst Note: Customer account flagged at 2:14 AM for an international transfer of INR 1,45,000 to a Singapore account. Investigation revealed a SIM swap had occurred 48 minutes prior. The fraudster used the new SIM to receive OTP and authenticate the transfer. Transaction was on a new device never previously linked to the account. Case classified as Critical. STR filed with FIU-IND. Matched rules: RBI-002, UPI-001, PMLA-003.",
+    "source": "kb_soc_notes.txt",
+    "chunk_id": "kb_soc_notes.txt__chunk_1"
+  },
+  {
+    "text": "CASE SOC-002: Structuring Pattern Across 4 Transactions\nAnalyst Note: Account holder made 4 transfers of INR 2,40,000 each within 6 hours to different beneficiaries. Individual amounts below the INR 10L reporting threshold but aggregate was INR 9,60,000. Pattern consistent with structuring to avoid detection. No business justification provided. Account placed under enhanced monitoring. STR filed. Matched rules: PMLA-001, RBI-003.",
+    "source": "kb_soc_notes.txt",
+    "chunk_id": "kb_soc_notes.txt__chunk_2"
+  },
+  {
+    "text": "CASE SOC-003: Mule Account Receiving Multiple Inbound Transfers\nAnalyst Note: Account opened 3 weeks ago with minimal KYC received 11 inbound transfers from different accounts within 48 hours totalling INR 6,30,000. All funds transferred out to a cryptocurrency exchange within 2 hours. Account holder unreachable. Account frozen. Matched rules: PMLA-002, PMLA-006, RBI-005.",
+    "source": "kb_soc_notes.txt",
+    "chunk_id": "kb_soc_notes.txt__chunk_3"
+  },
+  {
+    "text": "CASE SOC-004: Dormant Account Sudden Large Transaction\nAnalyst Note: Account dormant for 9 months. Suddenly received INR 4,50,000 from an unknown sender and immediately transferred out to a new payee. Customer confirmed they did not initiate the transaction. Account was accessed via a new device from a different city. Classic account takeover pattern. Matched rules: PMLA-007, RBI-006, UPI-008.",
+    "source": "kb_soc_notes.txt",
+    "chunk_id": "kb_soc_notes.txt__chunk_4"
+  },
+  {
+    "text": "CASE SOC-005: Micro-Transaction Testing Before Large Fraud\nAnalyst Note: Account showed 8 transactions of INR 1 each within 3 minutes at 3:47 AM, followed by a single transfer of INR 87,000 to a new payee. Micro-transactions are a known testing pattern used by fraudsters after compromising account credentials. Large transaction was auto-blocked by velocity rule. Customer notified. Matched rules: UPI-003, RBI-003, RBI-007.",
+    "source": "kb_soc_notes.txt",
+    "chunk_id": "kb_soc_notes.txt__chunk_5"
+  },
+  {
+    "text": "CASE SOC-006: New Device + New Payee + High Value Combo\nAnalyst Note: Transaction flagged for the combination of three high-risk signals occurring simultaneously — first-time device, first-time payee, and transaction value 7x the customer's 90-day average. No prior international activity. Customer called and confirmed they had not initiated the transfer. Funds recovered. Matched rules: UPI-002, RBI-004, RBI-002.",
+    "source": "kb_soc_notes.txt",
+    "chunk_id": "kb_soc_notes.txt__chunk_6"
+  },
+  {
+    "text": "CASE SOC-007: Collect Request Scam — Refund Fraud\nAnalyst Note: Customer received a WhatsApp message claiming to be from Canara Bank support offering a refund. Fraudster sent a UPI collect request for INR 12,000. Customer approved thinking it was a credit. Transaction was outbound. Customer reported within 10 minutes. Chargeback initiated. Matched rules: UPI-004, RBI-004.",
+    "source": "kb_soc_notes.txt",
+    "chunk_id": "kb_soc_notes.txt__chunk_7"
+  },
+  {
+    "text": "CASE SOC-008: Round-Trip Layering Through Three Accounts\nAnalyst Note: INR 3,20,000 transferred from Account A to Account B, then to Account C, then returned to an account linked to the original sender within 4 hours. Classic layering pattern to obscure source of funds. All three accounts had the same registered mobile number with different names. Escalated to compliance. Matched rules: PMLA-004, PMLA-008.",
+    "source": "kb_soc_notes.txt",
+    "chunk_id": "kb_soc_notes.txt__chunk_8"
+  },
+  {
+    "text": "CASE SOC-009: International IP on Domestic UPI\nAnalyst Note: UPI payment of INR 55,000 initiated from an IP address geolocated to Dubai. Account is a domestic savings account with no international travel history. Customer was physically present in Pune at the time based on branch visit 2 hours prior. Transaction auto-blocked. Account credentials reset. Matched rules: UPI-007, RBI-006, RBI-008.",
+    "source": "kb_soc_notes.txt",
+    "chunk_id": "kb_soc_notes.txt__chunk_9"
+  },
+  {
+    "text": "CASE SOC-010: Phishing VPA — Fake Merchant Address\nAnalyst Note: Customer made a payment of INR 28,000 to VPA \"canarabank.refund@ybl\" which was registered 4 days ago and had already received funds from 23 other customers. VPA name designed to impersonate bank. VPA reported to NPCI for takedown. Customers notified. Matched rules: UPI-006, PMLA-003.",
+    "source": "kb_soc_notes.txt",
+    "chunk_id": "kb_soc_notes.txt__chunk_10"
+  }
+]

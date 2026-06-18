@@ -1,0 +1,26 @@
+DOCUMENT: RBI Master Directions on Fraud Classification and Reporting
+SOURCE: Reserve Bank of India — Master Directions 2016 (Updated 2024)
+
+RULE RBI-001: Large Value Transaction Monitoring
+Any single transaction exceeding INR 10,00,000 (Ten Lakh Rupees) must be flagged for enhanced due diligence. Banks are required to verify source of funds for transactions above this threshold. Failure to monitor large value transactions is a compliance violation under RBI Master Directions on Fraud.
+
+RULE RBI-002: Cross-Border Transfer from New Device
+Any international fund transfer initiated from a device that has not been previously associated with the account must be blocked pending verification. The customer must re-authenticate using a second factor before the transfer is processed. This rule applies to UPI, NEFT, RTGS, and IMPS channels.
+
+RULE RBI-003: Velocity Breach — Multiple Transactions in Short Window
+If more than 3 transactions are initiated from the same account within a 10-minute window, the account must be flagged for velocity fraud. Banks must implement real-time velocity checks across all payment channels. Rapid sequential transactions are a primary indicator of account compromise.
+
+RULE RBI-004: New Payee High Value Transfer
+When a customer adds a new payee and initiates a transfer exceeding INR 50,000 within 30 minutes of adding that payee, the transaction must be held for a cooling-off period of 4 hours or confirmed via a separate out-of-band channel.
+
+RULE RBI-005: Incomplete KYC Account Restrictions
+Accounts with incomplete KYC documentation must not be permitted to receive transfers exceeding INR 10,000 per transaction or INR 1,00,000 per month in aggregate. Any transaction breaching these limits on an incomplete KYC account must be flagged immediately.
+
+RULE RBI-006: Unusual Geographic Transaction Pattern
+A transaction initiated from a location more than 500 km from the customer's registered address or last known transaction location must trigger an additional authentication step. Transactions originating from foreign IP addresses on domestic accounts require mandatory OTP confirmation.
+
+RULE RBI-007: Night-Time High Value Transactions
+Transactions exceeding INR 25,000 initiated between 11 PM and 6 AM local time on accounts with no prior history of night-time activity must be subjected to enhanced scrutiny. Banks may implement a time-delay mechanism for such transactions.
+
+RULE RBI-008: First-Time International Transaction
+For accounts that have never previously made an international transfer, the first cross-border transaction must be verified through a video KYC or branch confirmation process regardless of the transaction amount.

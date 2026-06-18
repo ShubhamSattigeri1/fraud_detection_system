@@ -1,0 +1,26 @@
+DOCUMENT: UPI Fraud Patterns and Detection Indicators
+SOURCE: NPCI Fraud Prevention Guidelines, Canara Bank SOC Internal Notes
+
+PATTERN UPI-001: SIM Swap Attack
+A SIM swap attack occurs when a fraudster convinces the telecom operator to transfer the victim's phone number to a new SIM card. Indicators include: OTP delivery failure reported by customer, sudden change in device fingerprint, high-value transaction initiated immediately after a SIM change event. Banks must cross-check with telecom APIs for recent SIM swap activity before processing transactions above INR 10,000.
+
+PATTERN UPI-002: New Device High Value Transaction
+When a UPI transaction is initiated from a device that has never been associated with the account, and the transaction value is more than 3x the customer's average transaction value, it is a strong fraud indicator. The combination of new device + high amount + new payee is classified as a critical fraud pattern.
+
+PATTERN UPI-003: Rapid Small Transaction Velocity
+Fraudsters often test a compromised account with small transactions (INR 1 to INR 10) before executing a large transfer. If an account shows 5 or more micro-transactions (below INR 100) within a 5-minute window followed by a large transaction, the large transaction must be blocked and reviewed.
+
+PATTERN UPI-004: Collect Request Fraud
+Fraudsters send UPI collect requests disguised as refund or cashback notifications. Customers are tricked into approving a debit instead of a credit. Indicator: customer approves an outbound collect request from an unregistered VPA for the first time. Banks must add a clear warning layer for first-time collect approvals.
+
+PATTERN UPI-005: Social Engineering — Screen Share Fraud
+Customer shares their screen with a fraudster posing as bank support. Fraudster captures UPI PIN or OTP. Indicator: multiple failed authentication attempts followed by a sudden successful high-value transaction from a different device or location than the failed attempts.
+
+PATTERN UPI-006: Phishing VPA Pattern
+Fraudulent VPAs (Virtual Payment Addresses) that closely mimic legitimate merchant addresses. For example, "canara.support@upi" or "refund.axis@paytm". Transactions to VPAs that were registered within the last 7 days and have no prior transaction history must be flagged.
+
+PATTERN UPI-007: International IP on Domestic UPI Account
+UPI is a domestic payment system. Any transaction request originating from an IP address geolocated outside India on a domestic UPI account is a definitive fraud indicator. Such transactions must be auto-blocked and the customer notified immediately.
+
+PATTERN UPI-008: Account Takeover via Password Reset
+Indicator pattern: password reset request, followed by device change, followed by high-value transaction — all within a 30-minute window. This three-step sequence is the most common account takeover pattern in Indian digital banking and must trigger an automatic account freeze pending customer verification.

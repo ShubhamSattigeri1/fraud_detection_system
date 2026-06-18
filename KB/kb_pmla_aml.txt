@@ -1,0 +1,26 @@
+DOCUMENT: Prevention of Money Laundering Act — Suspicious Transaction Indicators
+SOURCE: PMLA 2002, FIU-IND Guidelines, AML Policy Framework
+
+RULE PMLA-001: Structuring Detection
+Structuring refers to the deliberate splitting of a large transaction into multiple smaller transactions to avoid detection thresholds. If an account shows 3 or more transactions within 24 hours that individually fall below INR 10,00,000 but collectively exceed it, this constitutes a structuring pattern and must be reported to FIU-IND as a Suspicious Transaction Report.
+
+RULE PMLA-002: Mule Account Identification
+A mule account is one used to receive and rapidly forward fraudulent funds. Key indicators include: account receives a large credit followed by immediate debit within 2 hours, account has no prior transaction history consistent with stated occupation, multiple inbound transfers from unknown senders within 48 hours. Such accounts must be flagged and reported under Section 12 of PMLA.
+
+RULE PMLA-003: Suspicious Transaction Report — Filing Obligation
+Banks are required to file a Suspicious Transaction Report (STR) with the Financial Intelligence Unit of India (FIU-IND) within 7 days of detecting a suspicious transaction. The STR must include transaction details, account holder information, nature of suspicion, and any related transactions. Failure to file within the stipulated time is a punishable offence under PMLA Section 13.
+
+RULE PMLA-004: Round-Trip Transaction Pattern
+A round-trip transaction occurs when funds are transferred out of an account and return to the same or associated account within a short period, often through intermediary accounts. This is a strong indicator of layering in money laundering. Banks must monitor for circular fund flows across linked accounts.
+
+RULE PMLA-005: Politically Exposed Person Enhanced Monitoring
+Transactions involving Politically Exposed Persons (PEPs) or their immediate family members require enhanced due diligence regardless of transaction amount. Any unusual transaction pattern on a PEP account must immediately trigger an STR filing.
+
+RULE PMLA-006: Cash-Equivalent Digital Transaction Threshold
+Digital transactions that replicate cash-like behaviour — such as rapid conversion to gift cards, cryptocurrency, or foreign currency — must be treated with the same suspicion as large cash transactions. Transactions of INR 50,000 or above in this category require source of funds documentation.
+
+RULE PMLA-007: Dormant Account Sudden Activity
+An account that has shown no activity for 6 months or more and suddenly receives or initiates a high-value transaction must be flagged under PMLA guidelines. Banks must re-verify KYC for such accounts before processing large transactions.
+
+RULE PMLA-008: Multiple Accounts Same Beneficiary
+If multiple accounts within the same bank are found to be transferring funds to the same beneficiary account in a coordinated pattern, this is an indicator of organised fraud or money laundering and must be escalated to the compliance team immediately.

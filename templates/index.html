@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FraudShield AI</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f0f2f5; color: #1a1a2e; display: flex; min-height: 100vh; }
+.sidebar { width: 240px; background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%); color: #fff; padding: 0; flex-shrink: 0; display: flex; flex-direction: column; }
+.sidebar .brand { padding: 24px 20px; border-bottom: 1px solid rgba(255,255,255,.1); }
+.sidebar .brand h1 { font-size: 20px; font-weight: 700; }
+.sidebar .brand span { font-size: 12px; color: #e94560; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+.sidebar nav { padding: 12px 0; flex: 1; }
+.sidebar nav a { display: flex; align-items: center; gap: 10px; padding: 12px 20px; color: rgba(255,255,255,.6); text-decoration: none; font-size: 14px; transition: all .2s; border-left: 3px solid transparent; }
+.sidebar nav a:hover { color: #fff; background: rgba(255,255,255,.05); }
+.sidebar nav a.active { color: #fff; background: rgba(233,69,96,.15); border-left-color: #e94560; }
+.sidebar .footer { padding: 16px 20px; border-top: 1px solid rgba(255,255,255,.1); font-size: 11px; color: rgba(255,255,255,.3); }
+.main { flex: 1; padding: 32px; overflow-y: auto; max-height: 100vh; }
+.page { display: none; }
+.page.active { display: block; }
+h2 { font-size: 24px; font-weight: 700; margin-bottom: 20px; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 28px; }
+.card { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+.card .label { font-size: 12px; color: #6b7280; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 4px; }
+.card .value { font-size: 28px; font-weight: 700; color: #1a1a2e; }
+.card .value.green { color: #059669; }
+.card .value.red { color: #dc2626; }
+.card .value.blue { color: #2563eb; }
+.card .sub { font-size: 12px; color: #9ca3af; margin-top: 2px; }
+.table-wrap { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,.08); margin-bottom: 24px; }
+.table-wrap h3 { padding: 16px 20px; font-size: 14px; font-weight: 600; border-bottom: 1px solid #e5e7eb; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { text-align: left; padding: 10px 16px; font-weight: 600; color: #6b7280; font-size: 11px; text-transform: uppercase; letter-spacing: .5px; border-bottom: 1px solid #e5e7eb; background: #f9fafb; }
+td { padding: 10px 16px; border-bottom: 1px solid #f3f4f6; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: #f9fafb; }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+.badge-green { background: #d1fae5; color: #065f46; }
+.badge-red { background: #fee2e2; color: #991b1b; }
+.badge-blue { background: #dbeafe; color: #1e40af; }
+.badge-best::after { content: ' BEST'; }
+.chart-wrap { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,.08); margin-bottom: 24px; }
+.pipeline { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; background: #fff; border-radius: 12px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,.08); margin-bottom: 28px; }
+.pipeline .step { background: #1a1a2e; color: #fff; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; }
+.pipeline .arrow { color: #e94560; font-size: 18px; font-weight: 700; }
+.analyze-box { background: #fff; border-radius: 12px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,.08); margin-bottom: 16px; }
+.analyze-box select, .analyze-box button { padding: 10px 16px; border-radius: 8px; border: 1px solid #d1d5db; font-size: 14px; }
+.analyze-box button { background: #1a1a2e; color: #fff; border: none; cursor: pointer; font-weight: 600; }
+.analyze-box button:hover { background: #16213e; }
+.analyze-box button:disabled { opacity: .5; cursor: not-allowed; }
+.metrics-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+.metric-card { background: #fff; border-radius: 12px; padding: 16px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+.metric-card .m-label { font-size: 11px; text-transform: uppercase; color: #6b7280; letter-spacing: .5px; }
+.metric-card .m-value { font-size: 24px; font-weight: 700; margin-top: 4px; }
+.shap-list { list-style: none; margin-top: 12px; }
+.shap-list li { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #f3f4f6; font-size: 13px; }
+.shap-list li:last-child { border-bottom: none; }
+.shap-bar { height: 6px; border-radius: 3px; background: #e5e7eb; margin-top: 4px; overflow: hidden; }
+.shap-bar-fill { height: 100%; border-radius: 3px; transition: width .3s; }
+.faiss-card { background: #fff; border-radius: 12px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,.08); margin-bottom: 12px; }
+.faiss-card .rule-id { font-weight: 600; font-size: 13px; }
+.faiss-card .source { font-size: 11px; color: #6b7280; }
+.faiss-card .score { font-size: 11px; color: #e94560; }
+.faiss-card .text { font-size: 12px; color: #4b5563; margin-top: 4px; }
+.str-box { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; font-family: 'Courier New', monospace; font-size: 12px; white-space: pre-wrap; overflow-x: auto; max-height: 500px; overflow-y: auto; margin-top: 12px; }
+.loading { text-align: center; padding: 40px; color: #6b7280; }
+.error { color: #dc2626; padding: 12px; border-radius: 8px; background: #fee2e2; margin-bottom: 12px; }
+.rank-list { list-style: none; }
+.rank-list li { padding: 4px 0; font-size: 13px; }
+.rank-num { display: inline-block; width: 20px; height: 20px; border-radius: 50%; background: #e5e7eb; text-align: center; line-height: 20px; font-size: 11px; font-weight: 600; margin-right: 8px; }
+.drift-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid #f3f4f6; font-size: 13px; }
+.drift-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+@media (max-width: 768px) { .sidebar { width: 60px; } .sidebar .brand h1, .sidebar .brand span, .sidebar nav a span, .sidebar .footer { display: none; } .main { padding: 16px; } }
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="brand">
+    <h1>FraudShield</h1>
+  </div>
+  <nav>
+    <a href="#" data-page="overview" class="active"><span>Overview</span></a>
+    <a href="#" data-page="comparison"><span>Model Comparison</span></a>
+    <a href="#" data-page="cv"><span>Cross-Validation</span></a>
+    <a href="#" data-page="monitoring"><span>Monitoring</span></a>
+    <a href="#" data-page="analyze"><span>Try It Now</span></a>
+  </nav>
+  <div class="footer">FraudShield AI v1.0</div>
+</div>
+
+<div class="main">
+
+<!-- Overview -->
+<div class="page active" id="page-overview">
+  <h2>Overview</h2>
+  <div class="pipeline" id="pipeline"></div>
+  <div class="cards" id="overview-cards"></div>
+  <div class="table-wrap"><h3>Pipeline Steps</h3><table><thead><tr><th>Step</th><th>Description</th></tr></thead><tbody>
+    <tr><td><b>1. Data</b></td><td>Kaggle credit card fraud dataset (284k transactions, 0.17% fraud rate)</td></tr>
+    <tr><td><b>2. SMOTE</b></td><td>Synthetic oversampling to balance classes (50/50)</td></tr>
+    <tr><td><b>3. Models</b></td><td>Logistic Regression vs Random Forest vs SVM</td></tr>
+    <tr><td><b>4. SHAP</b></td><td>Explain each prediction — why was this flagged?</td></tr>
+    <tr><td><b>5. RAG</b></td><td>FAISS vector search against RBI, PMLA, UPI fraud KB</td></tr>
+    <tr><td><b>6. STR</b></td><td>Generate RBI-compliant Suspicious Transaction Report</td></tr>
+    <tr><td><b>7. Monitor</b></td><td>Track performance drift + data drift over time</td></tr>
+  </tbody></table></div>
+</div>
+
+<!-- Model Comparison -->
+<div class="page" id="page-comparison">
+  <h2>Model Comparison</h2>
+  <div class="cards" id="comp-cards"></div>
+  <div class="table-wrap" id="comp-table"></div>
+  <div class="chart-wrap"><canvas id="comp-chart" height="300"></canvas></div>
+</div>
+
+<!-- Cross-Validation -->
+<div class="page" id="page-cv">
+  <h2>Cross-Validation (5-Fold with SMOTE)</h2>
+  <div class="cards" id="cv-cards"></div>
+  <div class="table-wrap" id="cv-table"></div>
+  <div class="chart-wrap"><canvas id="cv-chart" height="300"></canvas></div>
+</div>
+
+<!-- Monitoring -->
+<div class="page" id="page-monitoring">
+  <h2>Monitoring</h2>
+  <div id="monit-content"></div>
+</div>
+
+<!-- Try It Now -->
+<div class="page" id="page-analyze">
+  <h2>Try a Transaction</h2>
+  <div class="analyze-box" id="analyze-box"></div>
+  <div id="analyze-results"></div>
+</div>
+
+</div>
+
+<script>
+// ── Navigation ────────────────────────────────────────────────────────
+document.querySelectorAll('.sidebar nav a').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    document.querySelectorAll('.sidebar nav a').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
+    a.classList.add('active');
+    document.getElementById('page-' + a.dataset.page).classList.add('active');
+  });
+});
+
+// ── API helper ────────────────────────────────────────────────────────
+async function api(url) {
+  const r = await fetch(url);
+  if (!r.ok) throw new Error(await r.text());
+  return r.json();
+}
+
+// ── Overview ──────────────────────────────────────────────────────────
+async function loadOverview() {
+  const data = await api('/api/overview');
+  document.getElementById('pipeline').innerHTML =
+    ['Kaggle Data', 'SMOTE', 'Random Forest', 'SHAP', 'FAISS KB', 'STR Report']
+      .map((s, i) => (i ? '<span class="arrow">→</span>' : '') + `<span class="step">${s}</span>`).join('');
+  document.getElementById('overview-cards').innerHTML =
+    `<div class="card"><div class="label">Best Model</div><div class="value blue">${data.best_model}</div></div>` +
+    `<div class="card"><div class="label">CV Weighted Score</div><div class="value green">${data.cv_weighted}</div></div>` +
+    `<div class="card"><div class="label">CV ROC-AUC</div><div class="value">${data.cv_roc_auc}</div></div>`;
+}
+
+// ── Comparison ────────────────────────────────────────────────────────
+async function loadComparison() {
+  const data = await api('/api/comparison');
+  const cols = ['accuracy','precision','recall','f1','roc_auc','pr_auc','weighted_score'];
+  const best = data.best;
+
+  document.getElementById('comp-cards').innerHTML =
+    `<div class="card"><div class="label">Models Compared</div><div class="value blue">${data.models.length}</div></div>` +
+    `<div class="card"><div class="label">Best Overall</div><div class="value green">${best}</div></div>`;
+
+  let html = '<table><thead><tr><th>Model</th>'+cols.map(c=>'<th>'+c.replace(/_/g,' ').toUpperCase()+'</th>').join('')+'</tr></thead><tbody>';
+  data.models.forEach(m => {
+    const isBest = m.model === best;
+    html += `<tr${isBest?' style="background:#f0fdf4"':''}><td><b>${m.model}</b>${isBest?' <span class="badge badge-green">BEST</span>':''}</td>`;
+    cols.forEach(c => html += `<td>${m[c].toFixed(4)}</td>`);
+    html += '</tr>';
+  });
+  html += '</tbody></table>';
+  document.getElementById('comp-table').innerHTML = '<h3>Metrics Comparison</h3>' + html;
+
+  new Chart(document.getElementById('comp-chart'), {
+    type: 'bar',
+    data: {
+      labels: data.models.map(m => m.model),
+      datasets: cols.map(c => ({
+        label: c.replace(/_/g,' '),
+        data: data.models.map(m => m[c]),
+        backgroundColor: ['#2563eb','#059669','#dc2626','#e94560','#8b5cf6','#f59e0b','#1a1a2e'][cols.indexOf(c)] || '#6b7280'
+      }))
+    },
+    options: { responsive: true, plugins: { legend: { position: 'bottom' } }, scales: { y: { beginAtZero: true, max: 1 } } }
+  });
+}
+
+// ── Cross-Validation ──────────────────────────────────────────────────
+function modelName(m) { return m.model || m.index; }
+
+async function loadCV() {
+  const data = await api('/api/cross-validation');
+  const cols = ['accuracy','precision','recall','f1','roc_auc','pr_auc','weighted_score'];
+  const best = data.best;
+
+  document.getElementById('cv-cards').innerHTML =
+    `<div class="card"><div class="label">Models Compared</div><div class="value blue">${data.models.length}</div></div>` +
+    `<div class="card"><div class="label">CV Best</div><div class="value green">${best}</div></div>` +
+    `<div class="card"><div class="label">CV Weighted Score</div><div class="value">${data.models.find(m=>modelName(m)===best).weighted_score.toFixed(4)}</div></div>`;
+
+  let html = '<table><thead><tr><th>Model</th>'+cols.map(c=>'<th>'+c.replace(/_/g,' ').toUpperCase()+'</th>').join('')+'</tr></thead><tbody>';
+  data.models.forEach(m => {
+    const name = modelName(m);
+    const isBest = name === best;
+    html += `<tr${isBest?' style="background:#f0fdf4"':''}><td><b>${name}</b>${isBest?' <span class="badge badge-green">BEST</span>':''}</td>`;
+    cols.forEach(c => html += `<td>${m[c].toFixed(4)}</td>`);
+    html += '</tr>';
+  });
+  html += '</tbody></table>';
+  document.getElementById('cv-table').innerHTML = '<h3>5-Fold Cross-Validation Results</h3>' + html;
+
+  new Chart(document.getElementById('cv-chart'), {
+    type: 'bar',
+    data: {
+      labels: data.models.map(m => modelName(m)),
+      datasets: cols.map(c => ({
+        label: c.replace(/_/g,' '),
+        data: data.models.map(m => m[c]),
+        backgroundColor: ['#2563eb','#059669','#dc2626','#e94560','#8b5cf6','#f59e0b','#1a1a2e'][cols.indexOf(c)] || '#6b7280'
+      }))
+    },
+    options: { responsive: true, plugins: { legend: { position: 'bottom' } }, scales: { y: { beginAtZero: true, max: 1 } } }
+  });
+}
+
+// ── Monitoring ────────────────────────────────────────────────────────
+async function loadMonitoring() {
+  const data = await api('/api/monitoring');
+  let html = '';
+  if (data.metrics.length) {
+    html += '<div class="table-wrap"><h3>Performance History</h3><table><thead><tr><th>Timestamp</th><th>Accuracy</th><th>Precision</th><th>Recall</th><th>F1</th><th>ROC-AUC</th><th>PR-AUC</th></tr></thead><tbody>';
+    data.metrics.slice(-10).forEach(m => {
+      html += `<tr><td>${m.timestamp.slice(0,19)}</td><td>${m.accuracy.toFixed(4)}</td><td>${m.precision.toFixed(4)}</td><td>${m.recall.toFixed(4)}</td><td>${m.f1.toFixed(4)}</td><td>${m.roc_auc.toFixed(4)}</td><td>${m.pr_auc.toFixed(4)}</td></tr>`;
+    });
+    html += '</tbody></table></div>';
+  }
+  if (data.drift.length) {
+    html += '<div class="table-wrap"><h3>Drift Detection</h3><div style="padding:12px 20px">';
+    data.drift.slice(-5).forEach(d => {
+      const pct = (d.drift_ratio * 100).toFixed(0);
+      const color = d.drifted_features > 0 ? 'red' : 'green';
+      html += `<div class="drift-row"><span class="drift-dot" style="background:${color}"></span>`;
+      html += `<span>${d.timestamp.slice(0,19)}</span>`;
+      html += `<span class="badge badge-${color}">${pct}% drifted (${d.drifted_features}/${d.total_features})</span>`;
+      if (d.drifted_features) html += `<span style="color:#6b7280;font-size:12px">${d.drifted_feature_names.slice(0,5).join(', ')}</span>`;
+      html += '</div>';
+    });
+    html += '</div></div>';
+  }
+  if (!data.metrics.length && !data.drift.length) html = '<div class="card" style="padding:40px;text-align:center;color:#6b7280">No monitoring data yet. Run <code>test.py</code> first.</div>';
+  document.getElementById('monit-content').innerHTML = html;
+}
+
+// ── Try It Now ────────────────────────────────────────────────────────
+async function loadAnalyze() {
+  const samples = await api('/api/samples');
+  let html = `<label style="font-size:14px;font-weight:600;display:block;margin-bottom:8px">Select a test transaction:</label>
+    <div style="display:flex;gap:10px;align-items:center">
+    <select id="sample-select" style="flex:1">`;
+  samples.samples.forEach(s => {
+    html += `<option value="${s.index}">Sample #${s.index} — ${s.label ? 'FRAUD' : 'LEGIT'}</option>`;
+  });
+  html += `</select><button onclick="analyze()">Analyze Transaction</button></div>`;
+  document.getElementById('analyze-box').innerHTML = html;
+}
+
+async function analyze() {
+  const idx = document.getElementById('sample-select').value;
+  const resDiv = document.getElementById('analyze-results');
+  resDiv.innerHTML = '<div class="loading">Analyzing transaction...</div>';
+  try {
+    const data = await fetch('/api/analyze', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({index:idx}) }).then(r=>r.json());
+
+    const predLabel = data.prediction ? 'FRAUD' : 'LEGIT';
+    const trueLabel = data.true_label ? 'FRAUD' : 'LEGIT';
+    const predColor = data.prediction ? 'red' : 'green';
+    const match = data.prediction === data.true_label;
+
+    let html = `<div class="metrics-row">
+      <div class="metric-card"><div class="m-label">Prediction</div><div class="m-value" style="color:var(--${predColor})">${predLabel}</div></div>
+      <div class="metric-card"><div class="m-label">Fraud Probability</div><div class="m-value">${(data.probability*100).toFixed(1)}%</div></div>
+      <div class="metric-card"><div class="m-label">Actual Label</div><div class="m-value ${match?'green':'red'}">${trueLabel} ${match?'✓':'✗'}</div></div>
+    </div>`;
+
+    // SHAP
+    html += '<div class="table-wrap"><h3>SHAP Feature Importance (Top 10)</h3><ul class="shap-list">';
+    const maxAbs = Math.max(...data.shap.map(s => Math.abs(s.value)));
+    data.shap.forEach(s => {
+      const pct = Math.abs(s.value) / maxAbs * 100;
+      const color = s.value > 0 ? '#dc2626' : '#2563eb';
+      const dir = s.value > 0 ? 'increases fraud score' : 'decreases fraud score';
+      html += `<li><span><b>${s.feature}</b> (value: ${s.feat_value})<br><small style="color:#6b7280">${dir}</small></span><span>${s.value > 0 ? '+':''}${s.value.toFixed(4)}</span></li>
+        <div class="shap-bar"><div class="shap-bar-fill" style="width:${pct}%;background:${color}"></div></div>`;
+    });
+    html += '</ul></div>';
+
+    // Plain English
+    html += '<div class="card" style="padding:16px;margin-bottom:16px"><h3 style="font-size:14px;margin-bottom:8px">Plain English Summary</h3>';
+    html += `<p style="font-size:13px;color:#4b5563">${data.plain_english.summary}</p>`;
+    html += '<ul style="margin-top:8px;font-size:13px;color:#4b5563;list-style:none">';
+    data.plain_english.bullets.forEach(b => html += `<li style="padding:2px 0">${b.trim()}</li>`);
+    html += '</ul></div>';
+
+    // FAISS
+    html += '<h3 style="font-size:16px;margin-bottom:12px">Matched Policies</h3>';
+    data.faiss.forEach(r => {
+      html += `<div class="faiss-card"><div class="rule-id">${r.rule_id} <span class="source">— ${r.source}</span> <span class="score">(${r.score.toFixed(4)})</span></div>`;
+      html += `<div class="text">${r.text.slice(0,300)}...</div></div>`;
+    });
+
+    // STR
+    html += '<h3 style="font-size:16px;margin:20px 0 12px">Suspicious Transaction Report</h3>';
+    if (data.str_report) {
+      html += `<div class="str-box">${data.str_report}</div>`;
+    } else {
+      html += '<div class="card" style="padding:16px;color:#6b7280">No STR generated (low risk).</div>';
+    }
+
+    resDiv.innerHTML = html;
+    resDiv.scrollIntoView({behavior:'smooth'});
+  } catch(e) {
+    resDiv.innerHTML = `<div class="error">Error: ${e.message}</div>`;
+  }
+}
+
+// ── Init ──────────────────────────────────────────────────────────────
+loadOverview();
+loadComparison();
+loadCV();
+loadMonitoring();
+loadAnalyze();
+</script>
+</body>
+</html>

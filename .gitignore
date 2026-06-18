@@ -1,2 +1,29 @@
 creditcard.csv
 archive.zip
+# Existing
+creditcard.csv
+archive.zip
+
+# Python
+*.pyc
+__pycache__/
+*.pyc
+
+# Trained models
+*.pkl
+
+# FAISS index
+faiss_index.bin
+faiss_metadata.json
+
+# Generated reports & monitoring
+str_reports/
+monitoring/
+
+# Generated CSVs
+cv_results.csv
+model_comparison_results.csv
+
+# Virtual environment
+venv/
+.venv/
