@@ -168,6 +168,42 @@ def train_svm(X_train, y_train, features):
     return pipeline
 
 
+def train_xgboost(X_train, y_train, features):
+    """Train XGBoost with fast config for imbalanced data."""
+    from xgboost import XGBClassifier
+
+    print("\n" + "="*60)
+    print("TRAINING XGBOOST (FAST CONFIG)")
+    print("="*60)
+
+    preprocessor = create_preprocessor(features)
+
+    # Calculate scale_pos_weight for imbalanced data
+    scale_pos_weight = len(y_train[y_train==0]) / len(y_train[y_train==1])
+
+    pipeline = Pipeline(
+        steps=[
+            ("preprocessor", preprocessor),
+            ("clf", XGBClassifier(
+                n_estimators=50,
+                max_depth=6,
+                learning_rate=0.1,
+                subsample=0.8,
+                colsample_bytree=0.8,
+                scale_pos_weight=scale_pos_weight,
+                random_state=42,
+                n_jobs=-1,
+                eval_metric='logloss',
+                verbosity=0
+            )),
+        ]
+    )
+
+    pipeline.fit(X_train, y_train)
+    print("XGBoost trained successfully.")
+    return pipeline
+
+
 def train_tensorflow_model(X_train, y_train, features, X_val=None, y_val=None):
     """Skipped for speed - enable TF_AVAILABLE = True to use"""
     print("\nTensorFlow model skipped for speed. Enable TF_AVAILABLE to train.")
@@ -305,7 +341,13 @@ if __name__ == "__main__":
     results.append(svm_results)
     joblib.dump(svm_model, "svm_pipeline.pkl")
 
-    # 4. TensorFlow
+    # 4. XGBoost
+    xgb_model = train_xgboost(X_train_sm, y_train_sm, features)
+    xgb_results = evaluate_model(xgb_model, X_test, y_test, "XGBoost")
+    results.append(xgb_results)
+    joblib.dump(xgb_model, "xgb_pipeline.pkl")
+
+    # 5. TensorFlow
     tf_model = train_tensorflow_model(X_train_sm, y_train_sm, features)
     if tf_model:
         tf_results = evaluate_model(tf_model, X_test, y_test, "TensorFlow")
