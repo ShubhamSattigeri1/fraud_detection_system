@@ -1,0 +1,9 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.uv]
+# Force binary wheels to avoid building from source
+[tool.uv.pip]
+compile-bytecode = true
+link-mode = "copy"
